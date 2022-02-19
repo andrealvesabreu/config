@@ -1,0 +1,64 @@
+{
+    "type": "object",
+    "required": [
+        "type",
+        "config"
+    ],
+    "properties": {
+        "type": {
+            "type": "string",
+            "const": "jwt"
+        },
+        "config": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "required": [
+                    "name",
+                    "pass"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 60,
+                        "pattern": "^[^\\s]*$"
+                    },
+                    "aud": {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 60
+                    },
+                    "cty": {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 60
+                    },
+                    "iss": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "minLength": 3,
+                        "maxLength": 250
+                    },
+                    "nbf": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "default": 0
+                    },
+                    "exp": {
+                        "type": "integer",
+                        "minimum": 0
+                    },
+                    "pass": {
+                        "type": "string",
+                        "minLength": 3,
+                        "maxLength": 1000
+                    }
+                }
+            }
+        }
+    }
+}

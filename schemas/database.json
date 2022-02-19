@@ -1,0 +1,240 @@
+{
+    "type": "object",
+    "required": [
+        "type",
+        "config"
+    ],
+    "properties": {
+        "type": {
+            "type": "string",
+            "const": "database"
+        },
+        "config": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "anyOf": [
+                    {
+                        "if": {
+                            "properties": {
+                                "driver": {
+                                    "const": "mysql"
+                                }
+                            },
+                            "required": [
+                                "driver"
+                            ]
+                        },
+                        "then": {
+                            "$ref": "#/definitions/mysql"
+                        },
+                        "else": {
+                            "$ref": "#/definitions/default"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "definitions": {
+        "mysql": {
+            "type": "object",
+            "required": [
+                "name",
+                "driver",
+                "port",
+                "user",
+                "pass",
+                "database"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 60,
+                    "pattern": "^[^\\s]*$"
+                },
+                "driver": {
+                    "const": "mysql"
+                },
+                "port": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 65535
+                },
+                "user": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                },
+                "pass": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                },
+                "database": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 50
+                },
+                "charset": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 30
+                },
+                "collation": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 30
+                },
+                "prefix": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "minLength": 1,
+                    "maxLength": 30
+                },
+                "timezone": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "minLength": 1,
+                    "maxLength": 30
+                },
+                "strict": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "sticky": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "host": {
+                    "type": "string",
+                    "format": "hostname"
+                },
+                "read": {
+                    "type": "object",
+                    "properties": {
+                        "host": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 30
+                            },
+                            "minItems": 1
+                        }
+                    }
+                },
+                "write": {
+                    "type": "object",
+                    "properties": {
+                        "host": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 30
+                            },
+                            "minItems": 1
+                        }
+                    }
+                }
+            }
+        },
+        "default": {
+            "type": "object",
+            "required": [
+                "name",
+                "driver",
+                "port",
+                "user",
+                "pass",
+                "database"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 60,
+                    "pattern": "^[^\\s]*$"
+                },
+                "driver": {
+                    "enum": [
+                        "pgsql",
+                        "sqlsrv"
+                    ]
+                },
+                "port": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 65535
+                },
+                "user": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                },
+                "pass": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                },
+                "database": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 50
+                },
+                "charset": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 30
+                },
+                "prefix": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "minLength": 1,
+                    "maxLength": 30
+                },
+                "host": {
+                    "type": "string",
+                    "format": "hostname"
+                },
+                "read": {
+                    "type": "object",
+                    "properties": {
+                        "host": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 30
+                            },
+                            "minItems": 1
+                        }
+                    }
+                },
+                "write": {
+                    "type": "object",
+                    "properties": {
+                        "host": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 30
+                            },
+                            "minItems": 1
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

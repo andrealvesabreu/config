@@ -1,0 +1,238 @@
+{
+    "type": "object",
+    "required": [
+        "type",
+        "config"
+    ],
+    "properties": {
+        "type": {
+            "type": "string",
+            "const": "filesystem"
+        },
+        "config": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "anyOf": [
+                    {
+                        "if": {
+                            "properties": {
+                                "driver": {
+                                    "const": "ftp"
+                                }
+                            },
+                            "required": [
+                                "driver"
+                            ]
+                        },
+                        "then": {
+                            "$ref": "#/definitions/ftp"
+                        },
+                        "else": {
+                            "$ref": "#/definitions/sftp"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "definitions": {
+        "ftp": {
+            "type": "object",
+            "required": [
+                "name",
+                "driver",
+                "host",
+                "port"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 60,
+                    "pattern": "^[^\\s]*$"
+                },
+                "driver": {
+                    "const": "ftp"
+                },
+                "host": {
+                    "type": "string",
+                    "format": "hostname"
+                },
+                "port": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 65535
+                },
+                "user": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                },
+                "pass": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                },
+                "root": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                },
+                "ssl": {
+                    "type": "boolean"
+                },
+                "timeout": {
+                    "type": "integer",
+                    "minLength": 10,
+                    "maxLength": 300,
+                    "default": 30
+                },
+                "utf8": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "passive": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "transferMode": {
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2
+                    ]
+                },
+                "systemType": {
+                    "type": "string",
+                    "enum": [
+                        "windows",
+                        "unix"
+                    ]
+                },
+                "ignorePassiveAddress": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "timestampsOnUnixListingsEnabled": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "recurseManually": {
+                    "type": "boolean",
+                    "default": false
+                }
+            }
+        },
+        "sftp": {
+            "type": "object",
+            "required": [
+                "name",
+                "driver",
+                "host",
+                "port"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 60,
+                    "pattern": "^[^\\s]*$"
+                },
+                "driver": {
+                    "const": "sftp"
+                },
+                "host": {
+                    "type": "string",
+                    "format": "hostname"
+                },
+                "port": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 65535
+                },
+                "user": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                },
+                "pass": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                },
+                "root": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                },
+                "timeout": {
+                    "type": "integer",
+                    "minLength": 10,
+                    "maxLength": 300,
+                    "default": 30
+                },
+                "pkey": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "passkey": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "max_tries": {
+                    "type": "integer",
+                    "minLength": 1,
+                    "maxLength": 15,
+                    "default": 3
+                },
+                "fingerprint": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "mod": {
+                    "type": "object",
+                    "properties": {
+                        "file": {
+                            "type": "object",
+                            "properties": {
+                                "public": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 777
+                                },
+                                "private": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 777
+                                }
+                            }
+                        },
+                        "dir": {
+                            "type": "object",
+                            "properties": {
+                                "public": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 777
+                                },
+                                "private": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 777
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

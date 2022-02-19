@@ -1,0 +1,17 @@
+{
+	"autoload" : {
+		"psr-4" : {
+			"Inspire\\Config\\" : "src"
+		}
+	},
+	"name" : "inspire/config",
+	"description" : "Basic configuration library",
+	"license" : "MIT",
+	"type" : "library",
+	"require" : {
+		"php" : ">=7.4",
+		"opis/json-schema" : "~2.3",
+		"psr/log" : "~1.1.4@stable",
+		"inspire/support" : "~0.1"
+	}
+}
