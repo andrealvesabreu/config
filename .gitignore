@@ -1,5 +1,6 @@
 /.settings/
 /vendor/
-/.settings/
 /.buildpath
 /.project
+/Preferences/org/netbeans/modules/autoupdate.properties
+/composer.phar
