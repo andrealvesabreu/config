@@ -49,12 +49,15 @@ class Config
     public static function addConfig(array $data, string $type, bool $check = false): int
     {
         $count = 0;
-        foreach ($data as $idx => $imp) {
-            if (! isset($imp['name'])) {
-                self::$internalError[] = "You must provide a identifier name for every configuration! Index {$idx}";
-                continue;
-            }
-            if (! $check || ($check && self::checkConfiguration($data))) {
+        if (! $check || ($check && self::checkConfiguration([
+            'type' => 'signer',
+            'config' => $data
+        ]))) {
+            foreach ($data as $idx => $imp) {
+                if (! isset($imp['name'])) {
+                    self::$internalError[] = "You must provide a identifier name for every configuration! Index {$idx}";
+                    continue;
+                }
                 Arrays::set(self::$config, "{$type}.{$imp['name']}", $imp);
                 $count ++;
             }

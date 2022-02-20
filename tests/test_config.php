@@ -12,7 +12,7 @@ echo Config::loadFromFolder('config') . PHP_EOL;
 // print_r(Config::get());
 // Load a single file
 echo Config::loadFromFile('config/s3.php') . PHP_EOL;
-print_r(Config::get());
+// print_r(Config::get());
 /**
  * Validate an array configuration
  */

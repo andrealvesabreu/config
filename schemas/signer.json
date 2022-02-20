@@ -14,7 +14,7 @@
       "minItems": 1,
       "items": {
         "type": "object",
-        "anyOf": [
+        "oneOf": [
           {
             "$ref": "#/definitions/md"
           },
@@ -42,9 +42,7 @@
       "properties": {
         "alg": {
           "type": "string",
-          "enum": [
-            "md"
-          ]
+          "const": "md"
         },
         "version": {
           "enum": [
@@ -68,9 +66,7 @@
       "properties": {
         "alg": {
           "type": "string",
-          "enum": [
-            "sha"
-          ]
+          "const": "sha"
         },
         "version": {
           "enum": [
