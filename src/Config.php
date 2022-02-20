@@ -50,7 +50,7 @@ class Config
     {
         $count = 0;
         if (! $check || ($check && self::checkConfiguration([
-            'type' => 'signer',
+            'type' => $type,
             'config' => $data
         ]))) {
             foreach ($data as $idx => $imp) {
