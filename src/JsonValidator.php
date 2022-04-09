@@ -405,7 +405,7 @@ class JsonValidator
                 $error->keyword(), //
                 1, //
                 false);
-                $sysErr->setExtra([
+                $sysErr->setExtras([
                     'field' => $fieldMessage,
                     'rule' => $error->keyword()
                 ]);
