@@ -1,150 +1,150 @@
 {
-  "type": "object",
-  "required": [
-    "type",
-    "config"
-  ],
-  "properties": {
-    "type": {
-      "type": "string",
-      "const": "signer"
+    "type": "object",
+    "required": [
+        "type",
+        "config"
+    ],
+    "properties": {
+        "type": {
+            "type": "string",
+            "const": "signer"
+        },
+        "config": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "oneOf": [
+                    {
+                        "$ref": "#/definitions/md"
+                    },
+                    {
+                        "$ref": "#/definitions/sha"
+                    },
+                    {
+                        "$ref": "#/definitions/hs"
+                    },
+                    {
+                        "$ref": "#/definitions/cert"
+                    }
+                ],
+                "required": [
+                    "name",
+                    "alg",
+                    "version"
+                ]
+            }
+        }
     },
-    "config": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "type": "object",
-        "oneOf": [
-          {
-            "$ref": "#/definitions/md"
-          },
-          {
-            "$ref": "#/definitions/sha"
-          },
-          {
-            "$ref": "#/definitions/hs"
-          },
-          {
-            "$ref": "#/definitions/cert"
-          }
-        ],
-        "required": [
-          "name",
-          "alg",
-          "version"
-        ]
-      }
+    "definitions": {
+        "md": {
+            "type": "object",
+            "properties": {
+                "alg": {
+                    "type": "string",
+                    "const": "md"
+                },
+                "version": {
+                    "enum": [
+                        2,
+                        4,
+                        5
+                    ]
+                },
+                "key": {
+                    "type": "string",
+                    "minLength": 10,
+                    "maxLength": 200
+                }
+            },
+            "required": [
+                "key"
+            ]
+        },
+        "sha": {
+            "type": "object",
+            "properties": {
+                "alg": {
+                    "type": "string",
+                    "const": "sha"
+                },
+                "version": {
+                    "enum": [
+                        1,
+                        256,
+                        384,
+                        512
+                    ]
+                },
+                "key": {
+                    "type": "string",
+                    "minLength": 10,
+                    "maxLength": 200
+                }
+            },
+            "required": [
+                "key"
+            ]
+        },
+        "hs": {
+            "type": "object",
+            "properties": {
+                "alg": {
+                    "type": "string",
+                    "enum": [
+                        "hs"
+                    ]
+                },
+                "version": {
+                    "enum": [
+                        256,
+                        384,
+                        512
+                    ]
+                },
+                "key": {
+                    "type": "string",
+                    "minLength": 10,
+                    "maxLength": 2000
+                }
+            },
+            "required": [
+                "key"
+            ]
+        },
+        "cert": {
+            "type": "object",
+            "properties": {
+                "alg": {
+                    "type": "string",
+                    "enum": [
+                        "rs",
+                        "ps",
+                        "es"
+                    ]
+                },
+                "version": {
+                    "enum": [
+                        256,
+                        384,
+                        512
+                    ]
+                },
+                "pub_file": {
+                    "type": "string",
+                    "minLength": 10,
+                    "maxLength": 200
+                },
+                "pri_file": {
+                    "type": "string",
+                    "minLength": 10,
+                    "maxLength": 200
+                }
+            },
+            "required": [
+                "pub_file",
+                "pri_file"
+            ]
+        }
     }
-  },
-  "definitions": {
-    "md": {
-      "type": "object",
-      "properties": {
-        "alg": {
-          "type": "string",
-          "const": "md"
-        },
-        "version": {
-          "enum": [
-            2,
-            4,
-            5
-          ]
-        },
-        "key": {
-          "type": "string",
-          "minLength": 10,
-          "maxLength": 200
-        }
-      },
-      "required": [
-        "key"
-      ]
-    },
-    "sha": {
-      "type": "object",
-      "properties": {
-        "alg": {
-          "type": "string",
-          "const": "sha"
-        },
-        "version": {
-          "enum": [
-            1,
-            256,
-            384,
-            512
-          ]
-        },
-        "key": {
-          "type": "string",
-          "minLength": 10,
-          "maxLength": 200
-        }
-      },
-      "required": [
-        "key"
-      ]
-    },
-    "hs": {
-      "type": "object",
-      "properties": {
-        "alg": {
-          "type": "string",
-          "enum": [
-            "hs"
-          ]
-        },
-        "version": {
-          "enum": [
-            256,
-            384,
-            512
-          ]
-        },
-        "key": {
-          "type": "string",
-          "minLength": 10,
-          "maxLength": 2000
-        }
-      },
-      "required": [
-        "key"
-      ]
-    },
-    "cert": {
-      "type": "object",
-      "properties": {
-        "alg": {
-          "type": "string",
-          "enum": [
-            "rs",
-            "ps",
-            "es"
-          ]
-        },
-        "version": {
-          "enum": [
-            256,
-            384,
-            512
-          ]
-        },
-        "pub_file": {
-          "type": "string",
-          "minLength": 10,
-          "maxLength": 200
-        },
-        "pri_file": {
-          "type": "string",
-          "minLength": 10,
-          "maxLength": 200
-        }
-      },
-      "required": [
-        "pub_file",
-        "pri_file"
-      ]
-    }
-  }
 }

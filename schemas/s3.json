@@ -7,7 +7,7 @@
     "properties": {
         "type": {
             "type": "string",
-            "const":"s3"
+            "const": "s3"
         },
         "config": {
             "type": "array",

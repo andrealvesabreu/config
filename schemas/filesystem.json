@@ -18,20 +18,45 @@
                     {
                         "if": {
                             "properties": {
-                                "driver": {
+                                "adapter": {
                                     "const": "ftp"
                                 }
-                            },
-                            "required": [
-                                "driver"
-                            ]
+                            }
                         },
                         "then": {
                             "$ref": "#/definitions/ftp"
                         },
                         "else": {
-                            "$ref": "#/definitions/sftp"
-                        }
+                            "if": {
+                                "properties": {
+                                    "adapter": {
+                                        "const": "sftp"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "$ref": "#/definitions/sftp"
+                            },
+                            "else": {
+                                "if": {
+                                    "properties": {
+                                        "adapter": {
+                                            "const": "s3"
+                                        }
+                                    }
+                                },
+                                "then": {
+                                    "$ref": "#/definitions/s3"
+                                },
+                                "else": {
+                                    "$ref": "#/definitions/local"
+                                }
+                            }
+                        },
+                        "required": [
+                            "name",
+                            "adapter"
+                        ]
                     }
                 ]
             }
@@ -42,9 +67,11 @@
             "type": "object",
             "required": [
                 "name",
-                "driver",
+                "adapter",
                 "host",
-                "port"
+                "username",
+                "password",
+                "root"
             ],
             "properties": {
                 "name": {
@@ -53,7 +80,7 @@
                     "maxLength": 60,
                     "pattern": "^[^\\s]*$"
                 },
-                "driver": {
+                "adapter": {
                     "const": "ftp"
                 },
                 "host": {
@@ -65,17 +92,17 @@
                     "minimum": 1,
                     "maximum": 65535
                 },
-                "user": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 100
-                },
-                "pass": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 100
-                },
                 "root": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                },
+                "username": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                },
+                "password": {
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 100
@@ -85,8 +112,8 @@
                 },
                 "timeout": {
                     "type": "integer",
-                    "minLength": 10,
-                    "maxLength": 300,
+                    "minValue": 0,
+                    "maxValue": 300,
                     "default": 30
                 },
                 "utf8": {
@@ -129,9 +156,10 @@
             "type": "object",
             "required": [
                 "name",
-                "driver",
+                "adapter",
                 "host",
-                "port"
+                "port",
+                "username"
             ],
             "properties": {
                 "name": {
@@ -140,7 +168,7 @@
                     "maxLength": 60,
                     "pattern": "^[^\\s]*$"
                 },
-                "driver": {
+                "adapter": {
                     "const": "sftp"
                 },
                 "host": {
@@ -152,25 +180,25 @@
                     "minimum": 1,
                     "maximum": 65535
                 },
-                "user": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 100
-                },
-                "pass": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 100
-                },
                 "root": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                },
+                "username": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                },
+                "password": {
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 100
                 },
                 "timeout": {
                     "type": "integer",
-                    "minLength": 10,
-                    "maxLength": 300,
+                    "minValue": 1,
+                    "maxValue": 300,
                     "default": 30
                 },
                 "pkey": {
@@ -187,8 +215,8 @@
                 },
                 "max_tries": {
                     "type": "integer",
-                    "minLength": 1,
-                    "maxLength": 15,
+                    "minValue": 1,
+                    "maxValue": 15,
                     "default": 3
                 },
                 "fingerprint": {
@@ -206,12 +234,14 @@
                                 "public": {
                                     "type": "integer",
                                     "minimum": 0,
-                                    "maximum": 777
+                                    "maximum": 777,
+                                    "default": 777
                                 },
                                 "private": {
                                     "type": "integer",
                                     "minimum": 0,
-                                    "maximum": 777
+                                    "maximum": 777,
+                                    "default": 777
                                 }
                             }
                         },
@@ -221,12 +251,161 @@
                                 "public": {
                                     "type": "integer",
                                     "minimum": 0,
-                                    "maximum": 777
+                                    "maximum": 777,
+                                    "default": 777
                                 },
                                 "private": {
                                     "type": "integer",
                                     "minimum": 0,
-                                    "maximum": 777
+                                    "maximum": 777,
+                                    "default": 777
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "s3": {
+            "type": "object",
+            "required": [
+                "name",
+                "adapter",
+                "region",
+                "credentials",
+                "bucket"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 60,
+                    "pattern": "^[^\\s]*$"
+                },
+                "adapter": {
+                    "const": "s3"
+                },
+                "region": {
+                    "type": "string",
+                    "enum": [
+                        "us-east-2",
+                        "us-east-1",
+                        "us-west-1",
+                        "us-west-2",
+                        "af-south-1",
+                        "ap-east-1",
+                        "ap-south-1",
+                        "ap-northeast-3",
+                        "ap-northeast-2",
+                        "ap-southeast-1",
+                        "ap-southeast-2",
+                        "ap-northeast-1",
+                        "ca-central-1",
+                        "cn-north-1",
+                        "cn-northwest-1",
+                        "eu-central-1",
+                        "eu-west-1",
+                        "eu-west-2",
+                        "eu-south-1",
+                        "eu-west-3",
+                        "eu-north-1",
+                        "sa-east-1",
+                        "me-south-1",
+                        "us-gov-east-1",
+                        "us-gov-west-1"
+                    ]
+                },
+                "version": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "credentials": {
+                    "type": "object",
+                    "required": [
+                        "key",
+                        "secret"
+                    ],
+                    "properties": {
+                        "key": {
+                            "type": "string",
+                            "minLength": 16,
+                            "maxLength": 128,
+                            "pattern": "^[^\\s]*$"
+                        },
+                        "secret": {
+                            "type": "string",
+                            "minLength": 32,
+                            "maxLength": 128,
+                            "pattern": "^[^\\s]*$"
+                        }
+                    }
+                },
+                "bucket": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 64,
+                    "pattern": "(?=^.{3,63}$)(?!^(\\d+\\.)+\\d+$)(^(([a-z0-9]|[a-z0-9][a-z0-9\\-]*[a-z0-9])\\.)*([a-z0-9]|[a-z0-9][a-z0-9\\-]*[a-z0-9])$)"
+                }
+            }
+        },
+        "local": {
+            "type": "object",
+            "required": [
+                "name",
+                "adapter",
+                "root"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 60,
+                    "pattern": "^[^\\s]*$"
+                },
+                "adapter": {
+                    "const": "local"
+                },
+                "root": {
+                    "type": "string",
+                    "minLength": 0,
+                    "maxLength": 200
+                },
+                "mod": {
+                    "type": "object",
+                    "properties": {
+                        "file": {
+                            "type": "object",
+                            "properties": {
+                                "public": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 777,
+                                    "default": 777
+                                },
+                                "private": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 777,
+                                    "default": 777
+                                }
+                            }
+                        },
+                        "dir": {
+                            "type": "object",
+                            "properties": {
+                                "public": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 777,
+                                    "default": 777
+                                },
+                                "private": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 777,
+                                    "default": 777
                                 }
                             }
                         }
