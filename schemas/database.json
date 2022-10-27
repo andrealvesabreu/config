@@ -21,17 +21,29 @@
                                 "driver": {
                                     "const": "mysql"
                                 }
-                            },
-                            "required": [
-                                "driver"
-                            ]
+                            }
                         },
                         "then": {
                             "$ref": "#/definitions/mysql"
                         },
                         "else": {
-                            "$ref": "#/definitions/default"
-                        }
+                            "if": {
+                                "properties": {
+                                    "driver": {
+                                        "const": "cassandra"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "$ref": "#/definitions/cassandra"
+                            },
+                            "else": {
+                                "$ref": "#/definitions/default"
+                            }
+                        },
+                        "required": [
+                            "driver"
+                        ]
                     }
                 ]
             }
@@ -142,6 +154,59 @@
                             },
                             "minItems": 1
                         }
+                    }
+                }
+            }
+        },
+        "cassandra": {
+            "type": "object",
+            "required": [
+                "name",
+                "driver",
+                "port",
+                "user",
+                "pass",
+                "keyspace",
+                "hosts"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 60,
+                    "pattern": "^[^\\s]*$"
+                },
+                "driver": {
+                    "const": "cassandra"
+                },
+                "port": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 65535
+                },
+                "user": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                },
+                "pass": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                },
+                "keyspace": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 50
+                },
+                "hosts": {
+                    "type": "array",
+                    "minItens": 1,
+                    "maxItens": 10,
+                    "itens": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 50
                     }
                 }
             }

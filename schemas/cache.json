@@ -7,7 +7,7 @@
     "properties": {
         "type": {
             "type": "string",
-            "const":"cache"
+            "const": "cache"
         },
         "config": {
             "type": "array",
@@ -21,17 +21,17 @@
                                 "driver": {
                                     "const": "redis"
                                 }
-                            },
-                            "required": [
-                                "driver"
-                            ]
+                            }
                         },
                         "then": {
                             "$ref": "#/definitions/redis"
                         },
                         "else": {
                             "$ref": "#/definitions/memcached"
-                        }
+                        },
+                        "required": [
+                            "driver"
+                        ]
                     }
                 ]
             }

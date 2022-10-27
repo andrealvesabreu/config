@@ -42,6 +42,17 @@ return [
             'charset' => 'utf8',
             'prefix' => NULL,
             'schema' => 'public'
+        ],
+        [
+            'name' => 'testcassandra',
+            'driver' => 'cassandra',
+            'hosts' => [
+                'cassandra.test.com'
+            ],
+            'user' => 'test',
+            'pass' => 'test123',
+            'port' => 9042,
+            'keyspace' => 'testkeyspace'
         ]
     ]
 ];

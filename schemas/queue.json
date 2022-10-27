@@ -21,17 +21,17 @@
                                 "driver": {
                                     "const": "redis"
                                 }
-                            },
-                            "required": [
-                                "driver"
-                            ]
+                            }
                         },
                         "then": {
                             "$ref": "#/definitions/redis"
                         },
                         "else": {
                             "$ref": "#/definitions/rabbit"
-                        }
+                        },
+                        "required": [
+                            "driver"
+                        ]
                     }
                 ]
             }
@@ -46,6 +46,7 @@
                 "host",
                 "port",
                 "exchange",
+                "queue",
                 "queue_type"
             ],
             "properties": {
@@ -78,6 +79,11 @@
                     "maxLength": 100
                 },
                 "vhost": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                },
+                "queue": {
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 100
@@ -196,6 +202,7 @@
             "required": [
                 "name",
                 "driver",
+                "queue",
                 "host",
                 "port"
             ],
@@ -219,6 +226,11 @@
                     "maximum": 65535
                 },
                 "pass": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                },
+                "queue": {
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 100
